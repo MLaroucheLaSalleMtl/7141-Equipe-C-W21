@@ -6,22 +6,46 @@ using UnityEngine.InputSystem;
 public class MoveTarget : MonoBehaviour
 {
     public GameObject board;
+    public GameObject motherSphere;
+
+    public int angle;
+    public bool stopped = false;
+   
     public void OnTurnLeft(InputAction.CallbackContext context)
     {
-        //transform.position = new Vector3(transform.position.x , transform.position.y, transform.position.z - 3);
 
-        transform.RotateAround(board.transform.position, Vector3.down, 10);
+        if (angle < 80)
+        {
+            transform.RotateAround(board.transform.position, Vector3.down, 10);
+            angle += 10;
+        }
     }
 
     public void OnTurnRight(InputAction.CallbackContext context)
     {
-        //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 3);
-        transform.RotateAround(board.transform.position, Vector3.up, 10);
+        if (angle > -80)
+        {
+            transform.RotateAround(board.transform.position, Vector3.up, 10);
+            angle -= 10;
+        }
+    }
+
+    public void StoppingTurn()
+    {
+        transform.position = new Vector3(board.transform.position.x, board.transform.position.y, board.transform.position.z + 10);
+        
+    }
+
+    public void SpeedingUp()
+    {
+        transform.position = motherSphere.transform.position;
     }
     // Start is called before the first frame update
     void Start()
     {
+        angle = 0;
         
+        //motherSphere = GetComponentInParent<Transform>();
     }
 
     // Update is called once per frame

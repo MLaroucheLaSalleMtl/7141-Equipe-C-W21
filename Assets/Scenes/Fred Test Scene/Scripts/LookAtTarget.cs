@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class LookAtTarget : MonoBehaviour
 {
+    public MoveTarget moveTarget;
+
     public Transform target;
 
     public float currentSpeed = 0f;
@@ -13,19 +15,28 @@ public class LookAtTarget : MonoBehaviour
     private bool speedingUp = false;
     public void OnForward(InputAction.CallbackContext context)
     {
-        speedingUp = true;
-       
+        if (!speedingUp)
+        {
+            speedingUp = true;
+            moveTarget.stopped = false;
+            moveTarget.angle = 0;
+            moveTarget.SpeedingUp();
+        }
        }
 
     public void OnSlowDown(InputAction.CallbackContext context)
     {
-        speedingUp = false;
-
+        if (speedingUp)
+        {
+            speedingUp = false;
+            moveTarget.stopped = true;
+            moveTarget.StoppingTurn();
+        }
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        moveTarget = target.GetComponent<MoveTarget>();
     }
 
     // Update is called once per frame
@@ -38,15 +49,20 @@ public class LookAtTarget : MonoBehaviour
 
         transform.localRotation = Quaternion.Slerp(current, rotation, Time.deltaTime);
 
-        transform.Translate(0, 0, currentSpeed * Time.deltaTime);
+
+        //transform.Translate(0, 0, currentSpeed * Time.deltaTime);
+        
 
         if (speedingUp)
         {
             currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed, 0.5f * Time.deltaTime);
+            transform.Translate(0, 0, currentSpeed * Time.deltaTime);
         }
         else
         {
             currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.5f * Time.deltaTime);
+            //transform.Translate( currentSpeed * Time.deltaTime,0,0);
+            transform.position += new Vector3(-currentSpeed * Time.deltaTime, 0, 0);
         }
     }
 }
