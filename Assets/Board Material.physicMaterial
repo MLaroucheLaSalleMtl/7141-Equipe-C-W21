@@ -9,6 +9,6 @@ PhysicMaterial:
   m_Name: Board Material
   dynamicFriction: 1
   staticFriction: 0.1
-  bounciness: 0
+  bounciness: 0.001
   frictionCombine: 1
-  bounceCombine: 0
+  bounceCombine: 1

@@ -21,7 +21,7 @@ public class Position : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        positionAhead = new Vector3(target.transform.position.x - 10, target.transform.position.y, target.transform.position.z);
+        positionAhead = new Vector3(target.transform.position.x , target.transform.position.y -2, target.transform.position.z - 10);
 
         if (transform.position != positionAhead)
         {

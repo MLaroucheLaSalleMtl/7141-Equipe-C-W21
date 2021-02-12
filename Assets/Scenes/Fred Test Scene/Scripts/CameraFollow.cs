@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
     {
         cameraPos = player.transform.position;
         cameraPos.y += cameraHeight;
-        cameraPos.x += cameraDistance;
+        cameraPos.z += cameraDistance;
         transform.position = cameraPos;
     }
 }

@@ -32,13 +32,15 @@ public class MoveTarget : MonoBehaviour
 
     public void StoppingTurn()
     {
-        transform.position = new Vector3(board.transform.position.x, board.transform.position.y, board.transform.position.z + 10);
-        
+        transform.position = new Vector3(board.transform.position.x -10, board.transform.position.y, board.transform.position.z );
+        board.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+
     }
 
     public void SpeedingUp()
     {
         transform.position = motherSphere.transform.position;
+        board.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
     }
     // Start is called before the first frame update
     void Start()

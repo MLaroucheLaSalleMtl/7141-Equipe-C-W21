@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class LookAtTarget : MonoBehaviour
 {
+    private Rigidbody rb;
     public MoveTarget moveTarget;
 
     public Transform target;
@@ -12,7 +13,8 @@ public class LookAtTarget : MonoBehaviour
     public float currentSpeed = 0f;
     public float maxSpeed = 20f;
 
-    private bool speedingUp = false;
+    public bool speedingUp = false;
+    public GameObject spherePosition;
     public void OnForward(InputAction.CallbackContext context)
     {
         if (!speedingUp)
@@ -21,6 +23,7 @@ public class LookAtTarget : MonoBehaviour
             moveTarget.stopped = false;
             moveTarget.angle = 0;
             moveTarget.SpeedingUp();
+           
         }
        }
 
@@ -37,6 +40,7 @@ public class LookAtTarget : MonoBehaviour
     void Start()
     {
         moveTarget = target.GetComponent<MoveTarget>();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -56,13 +60,18 @@ public class LookAtTarget : MonoBehaviour
         if (speedingUp)
         {
             currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed, 0.5f * Time.deltaTime);
-            transform.Translate(0, 0, currentSpeed * Time.deltaTime);
+            
+            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            
         }
         else
         {
             currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.5f * Time.deltaTime);
             //transform.Translate( currentSpeed * Time.deltaTime,0,0);
-            transform.position += new Vector3(-currentSpeed * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(0, 0, -currentSpeed * Time.deltaTime);
+           
+            
+          
         }
     }
 }
