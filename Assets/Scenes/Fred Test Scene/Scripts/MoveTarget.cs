@@ -7,6 +7,7 @@ public class MoveTarget : MonoBehaviour
 {
     public GameObject board;
     public GameObject motherSphere;
+    public Jumping jmp;
 
     public int angle;
     public bool stopped = false;
@@ -23,10 +24,13 @@ public class MoveTarget : MonoBehaviour
 
     public void OnTurnRight(InputAction.CallbackContext context)
     {
-        if (angle > -80)
+        if (jmp.isGrounded)
         {
-            transform.RotateAround(board.transform.position, Vector3.up, 10);
-            angle -= 10;
+            if (angle > -80)
+            {
+                transform.RotateAround(board.transform.position, Vector3.up, 10);
+                angle -= 10;
+            }
         }
     }
 
@@ -46,7 +50,7 @@ public class MoveTarget : MonoBehaviour
     void Start()
     {
         angle = 0;
-        
+        jmp = GameObject.FindGameObjectWithTag("Snowboard").GetComponent<Jumping>();
         //motherSphere = GetComponentInParent<Transform>();
     }
 

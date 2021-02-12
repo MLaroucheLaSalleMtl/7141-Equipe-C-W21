@@ -40,7 +40,7 @@ public class Jumping : MonoBehaviour
     {
         if (isJumping && isGrounded)
         {
-           rb.AddForce(new Vector3(0,200, 0), ForceMode.Impulse);
+           rb.AddForce(new Vector3(0,700, 0), ForceMode.Impulse);
         }
     }
 
@@ -53,7 +53,7 @@ public class Jumping : MonoBehaviour
             transform.Translate(Vector3.down * 9.81f * Time.deltaTime);
            // rb.AddForce(Vector3.down * Time.deltaTime, ForceMode.Impulse);
         } */
-        if (!isGrounded)
+        if (!isGrounded )
         {
             lat.speedingUp = false;
             

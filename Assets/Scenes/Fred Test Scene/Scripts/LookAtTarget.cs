@@ -15,6 +15,8 @@ public class LookAtTarget : MonoBehaviour
 
     public bool speedingUp = false;
     public GameObject spherePosition;
+    private Flipping flip;
+    private Jumping jmp;
     public void OnForward(InputAction.CallbackContext context)
     {
         if (!speedingUp)
@@ -29,7 +31,7 @@ public class LookAtTarget : MonoBehaviour
 
     public void OnSlowDown(InputAction.CallbackContext context)
     {
-        if (speedingUp)
+        if (speedingUp && !flip.isFlipping)
         {
             speedingUp = false;
             moveTarget.stopped = true;
@@ -41,19 +43,23 @@ public class LookAtTarget : MonoBehaviour
     {
         moveTarget = target.GetComponent<MoveTarget>();
         rb = GetComponent<Rigidbody>();
+        flip = GetComponent<Flipping>();
+        jmp = GetComponent<Jumping>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 relativePos = (target.position + new Vector3(0, 0.5f, 0)) - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(relativePos);
+        if (!flip.isFlipping)
+        {
+            Vector3 relativePos = (target.position + new Vector3(0, 0.5f, 0)) - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos);
 
-        Quaternion current = transform.localRotation;
+            Quaternion current = transform.localRotation;
 
-        transform.localRotation = Quaternion.Slerp(current, rotation, Time.deltaTime);
+            transform.localRotation = Quaternion.Slerp(current, rotation, Time.deltaTime);
 
-
+        }
         //transform.Translate(0, 0, currentSpeed * Time.deltaTime);
         
 
@@ -64,7 +70,7 @@ public class LookAtTarget : MonoBehaviour
             transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
             
         }
-        else
+        else if (!speedingUp )
         {
             currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.5f * Time.deltaTime);
             //transform.Translate( currentSpeed * Time.deltaTime,0,0);
@@ -72,6 +78,6 @@ public class LookAtTarget : MonoBehaviour
            
             
           
-        }
+        }  
     }
 }
