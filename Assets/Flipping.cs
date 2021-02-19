@@ -24,7 +24,7 @@ public class Flipping : MonoBehaviour
         {
             isFlippingRight = false;
             isFlipping = false;
-            Debug.Log("Stopped Flip");
+           // Debug.Log("Stopped Flip");
         }
 
 

@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class TrackCheckpoint : MonoBehaviour
 {
     [SerializeField] public string nameTrack;
-
+    public int checkpointCount = 0;
+    private int lastCheckpoint;
     //private Transform PlayerTransform;
     //public Transform Restart;
 
@@ -31,21 +32,30 @@ public class TrackCheckpoint : MonoBehaviour
             
             checkpointList.Add(checkpoint);
         }
-
+        lastCheckpoint = checkpointList.Count;
         nextCheckpointIndex = 0;
+        checkpointCount = 1;
+        Debug.Log("Last: " + lastCheckpoint);
     }
 
     public void PlayerThroughCheckpoint(Checkpoint checkpoint)
     {
+        Scene scene = SceneManager.GetActiveScene();
+
+        if (lastCheckpoint == checkpointCount)
+        {
+            Debug.Log("Last");
+            SceneManager.LoadScene(scene.name);
+        }
         if(checkpointList.IndexOf(checkpoint) == nextCheckpointIndex)
         {
             Debug.Log("Good");
             nextCheckpointIndex = (nextCheckpointIndex + 1) % checkpointList.Count;
+            Debug.Log("Count: " + checkpointCount);
         }
         else
         {
             Debug.Log("Bad");
-            Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         }
     }

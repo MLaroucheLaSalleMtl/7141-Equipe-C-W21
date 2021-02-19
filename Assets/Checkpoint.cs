@@ -10,15 +10,15 @@ public class Checkpoint : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (isColliding) return;
-        isColliding = true;
-        if (other.gameObject.CompareTag("Player"))
+        //if (isColliding) return;
+        //isColliding = true;
+        if (other.gameObject.CompareTag("Snowboard"))
         {
             trackCheckpoints.PlayerThroughCheckpoint(this);
             gameObject.SetActive(false);
-
+            trackCheckpoints.checkpointCount++;
+            //StartCoroutine(Reset());
         }
-        //StartCoroutine(Reset());
     }
 
     public void SetTrackCheckpoints(TrackCheckpoint trackCheckpoints)
@@ -28,7 +28,7 @@ public class Checkpoint : MonoBehaviour
 
     //IEnumerator Reset()
     //{
-    //    yield return new WaitForSeconds(1);
-    //    isColliding = false;
+    //   yield return new WaitForSeconds(0.01f);
+    //  isColliding = false;
     //}
 }
