@@ -8,9 +8,11 @@ public class MoveBoard : MonoBehaviour
     private Rigidbody rb;
     public PhysicMaterial boardMaterial;
     public GameObject movingSphere;
+    public MoveTarget2 mt;
 
     private Vector3 previousFramePosition = Vector3.zero;
     public float speed;
+    public float maxSpeed = 50f;
 
     bool slowingDown;
     bool turningLeft;
@@ -64,7 +66,7 @@ public class MoveBoard : MonoBehaviour
         }
         else if(!slowingDown)
         {
-            boardMaterial.dynamicFriction = 0.3f;
+            boardMaterial.dynamicFriction = 0.1f;
         }
 
         if (turningLeft && speed > 0)
@@ -75,6 +77,11 @@ public class MoveBoard : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, movingSphere.transform.position, 0.1f);
         }
+        if (speed >= 50)
+        {
+            
+        }
+        
     }
 
     private void FixedUpdate()

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     private TrackCheckpoint trackCheckpoints;
-    private bool isColliding = false;
+    //private bool isColliding = false;
 
     private void OnTriggerEnter(Collider other)
     {

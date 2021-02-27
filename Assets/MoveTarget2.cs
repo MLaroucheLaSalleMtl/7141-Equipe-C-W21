@@ -7,41 +7,97 @@ public class MoveTarget2 : MonoBehaviour
 {
     public GameObject board;
     public GameObject motherSphere;
-    public Jumping jmp;
+    public MoveBall moveBall;
+    public GameObject ball;
 
-    public int angle;
+    public float angle;
     public bool stopped = false;
 
+    private bool turningRight = false;
+    private bool turningLeft = false;
+
+    private Vector3 origPos = new Vector3();
+
+    public bool upSlope = false;
+
+    RaycastHit hitInfo;
+    private Vector3 pos = new Vector3();
+    private Vector3 prevpos = new Vector3();
+    private void Ground()
+    {
+
+        if (Physics.Raycast(transform.position + Vector3.up + Vector3.up, Vector3.down, out hitInfo, 10))
+        {
+            pos.y = hitInfo.point.y;
+        }
+    }
     public void OnTurnLeft(InputAction.CallbackContext context)
     {
 
-        if (angle < 80)
+        if ( context.performed)
         {
-            transform.RotateAround(board.transform.position, Vector3.down, 10);
-            angle += 10;
+            turningLeft = true;
+        }else if (context.canceled)
+        {
+            turningLeft = false;
         }
     }
 
     public void OnTurnRight(InputAction.CallbackContext context)
     {
         
-            if (angle > -80)
+            if (context.performed)
             {
-                transform.RotateAround(board.transform.position, Vector3.up, 10);
-                angle -= 10;
-            }
+            turningRight = true;
+            }else if (context.canceled)
+        {
+            turningRight = false;
+        }
        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        angle = 0;
+        moveBall = ball.GetComponent<MoveBall>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        origPos = motherSphere.transform.position;
+        if (turningRight )
+        {
+            
+                transform.RotateAround(board.transform.position, Vector3.up, 120 * Time.deltaTime);
+            angle++;
+            
+        }
+        if (turningLeft )
+        {
+            
+                transform.RotateAround(board.transform.position, Vector3.down, 120 * Time.deltaTime);
+            angle--;
+
+        }
+       
+        Ground();
+        transform.position = new Vector3(transform.position.x, pos.y, transform.position.z);
+
+        if (Vector3.Distance(transform.position, board.transform.position) < 10)
+        {
+            float dist = Vector3.Distance(transform.position, board.transform.position);
+            float missing = 10 - dist;
+            transform.position += new Vector3(moveBall.direction.x, moveBall.direction.y, moveBall.direction.z) ;
+        }
         
+        if (transform.position.y > board.transform.position.y + 1)
+        {
+            upSlope = true;
+        }
+        else
+        {
+            upSlope = false;
+        }
     }
 }

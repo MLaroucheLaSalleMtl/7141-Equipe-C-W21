@@ -7,6 +7,10 @@ TagManager:
   - Ground
   - Snowboard
   - CheckpointTrigger
+  - Jump
+  - Track1
+  - Track2
+  - Track3
   layers:
   - Default
   - TransparentFX
@@ -14,8 +18,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Jump
   - 
   - 
   - 

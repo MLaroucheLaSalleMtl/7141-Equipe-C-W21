@@ -5,19 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class TrackCheckpoint : MonoBehaviour
 {
+    LevelSystem levelSystem;
+    GameManager manager;
     [SerializeField] public string nameTrack;
     public int checkpointCount = 0;
     private int lastCheckpoint;
-    //private Transform PlayerTransform;
-    //public Transform Restart;
+    public bool isCompleted;
 
     private List<Checkpoint> checkpointList;
     private int nextCheckpointIndex;
-    private void Start()
-    {
-        
-    }
-
+   
     private void Awake()
     {
         Transform checkpointsTransform = transform.Find(nameTrack);
@@ -42,21 +39,22 @@ public class TrackCheckpoint : MonoBehaviour
     {
         Scene scene = SceneManager.GetActiveScene();
 
-        if (lastCheckpoint == checkpointCount)
-        {
-            Debug.Log("Last");
-            SceneManager.LoadScene(scene.name);
-        }
-        if(checkpointList.IndexOf(checkpoint) == nextCheckpointIndex)
+
+        if (checkpointList.IndexOf(checkpoint) == nextCheckpointIndex)
         {
             Debug.Log("Good");
             nextCheckpointIndex = (nextCheckpointIndex + 1) % checkpointList.Count;
             Debug.Log("Count: " + checkpointCount);
+            if (lastCheckpoint == checkpointCount)
+            {
+                isCompleted = true;
+                Debug.Log(isCompleted);
+            };
         }
         else
         {
             Debug.Log("Bad");
-            SceneManager.LoadScene(scene.name);
         }
+        
     }
 }

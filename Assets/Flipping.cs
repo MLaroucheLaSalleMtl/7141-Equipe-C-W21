@@ -5,26 +5,28 @@ using UnityEngine.InputSystem;
 
 public class Flipping : MonoBehaviour
 {
-    private Jumping jmp;
-    private Rigidbody rb;
+    // private Jumping jmp;
+    public GameObject rollBall;
+    private Jump jmp;
+    public GameObject board;
     public GameObject com; //Center of mass
     public bool isFlipping = false;
     private bool isFlippingRight = false;
     private bool isFlippingLeft= false;
     private bool isFlippingForward = false;
-    private bool isFlippingBackwards = false;
+    public bool isFlippingBackwards = false;
 
+    private BoardPosition bp;
     public void FlipRight(InputAction.CallbackContext context)
     {
-        if (context.performed && !jmp.isGrounded)
+       if (context.performed && !jmp.grounded)
         {
-            isFlippingRight = true;
             isFlipping = true;
+            isFlippingRight = true;
         }else if (context.canceled)
         {
-            isFlippingRight = false;
             isFlipping = false;
-           // Debug.Log("Stopped Flip");
+            isFlippingRight = false;
         }
 
 
@@ -32,60 +34,77 @@ public class Flipping : MonoBehaviour
 
     public void FlipLeft(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !jmp.grounded)
         {
-
+            isFlipping = true;
+            isFlippingLeft = true;
         }
         else if (context.canceled)
         {
-
+            isFlipping = false;
+            isFlippingLeft = false;
         }
 
 
     }
     public void FlipForward(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !jmp.grounded)
         {
-
+            isFlipping = true;
+            isFlippingForward = true;
         }
         else if (context.canceled)
         {
-
+            isFlipping = false;
+            isFlippingForward = false;
         }
 
 
     }
     public void FlipBackwards(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !jmp.grounded)
         {
-
+            isFlipping = true;
+            isFlippingBackwards = true;
         }
         else if (context.canceled)
         {
-
-        }
+            isFlipping = false;
+            isFlippingBackwards = false;
+        } 
 
 
     }
     private void Start()
     {
-        jmp = GetComponent<Jumping>();
-        rb = GetComponent<Rigidbody>();
+
+        jmp = rollBall.GetComponent<Jump>();
+        bp = GetComponent<BoardPosition>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!jmp.isGrounded)
-        {
-            rb.constraints = RigidbodyConstraints.None;
-           if (isFlippingRight)
-            {
-                transform.RotateAround(com.transform.position, Vector3.right, 200 * Time.deltaTime);
-            }
 
+        if (isFlippingBackwards)
+        {
+            transform.position = rollBall.transform.position;
+            transform.RotateAround(rollBall.transform.position, -transform.forward, 400 * Time.deltaTime);
+
+        } if (isFlippingForward)
+        {
+            transform.position = rollBall.transform.position;
+            transform.RotateAround(rollBall.transform.position, transform.forward, 400 * Time.deltaTime);
+        }if (isFlippingRight)
+        {
+            transform.position = rollBall.transform.position;
+            transform.RotateAround(rollBall.transform.position, transform.up, 400 * Time.deltaTime);
+        }if (isFlippingLeft)
+        {
+            transform.position = rollBall.transform.position;
+            transform.RotateAround(rollBall.transform.position, -transform.up, 400 * Time.deltaTime);
         }
     }
 }

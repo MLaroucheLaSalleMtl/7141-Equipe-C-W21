@@ -5,9 +5,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    public bool trackCompleted = false;
+    //public bool isCompleted = false;
+    [SerializeField] private int amountPerCheckpoint = 30;
+    private int totalXP;
     private LevelSystem levelSystem;
     private Timer time;
+    public TrackCheckpoint trackCheckpoint;
     private void Awake()
     {
         if(instance == null)
@@ -29,12 +32,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (trackCompleted == true)
-        {
-            if(time.minutes <= 0 && time.seconds <= 30)
-            {
-                levelSystem.AddExperience(30);   
-            }
+        
+        if (trackCheckpoint.isCompleted == true)
+        {   
+            totalXP = (trackCheckpoint.checkpointCount - 1) * amountPerCheckpoint;
+            Debug.Log("Amount" + amountPerCheckpoint);
+            levelSystem.AddExperience(totalXP);
+            trackCheckpoint.isCompleted = false;
         }
     }
 }

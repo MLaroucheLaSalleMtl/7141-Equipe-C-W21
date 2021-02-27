@@ -16,7 +16,7 @@ public class LookAtTarget : MonoBehaviour
     public bool speedingUp = false;
     public GameObject spherePosition;
     private Flipping flip;
-    private Jumping jmp;
+   // private Jumping jmp;
     public void OnForward(InputAction.CallbackContext context)
     {
         if (!speedingUp)
@@ -44,7 +44,7 @@ public class LookAtTarget : MonoBehaviour
         moveTarget = target.GetComponent<MoveTarget>();
         rb = GetComponent<Rigidbody>();
         flip = GetComponent<Flipping>();
-        jmp = GetComponent<Jumping>();
+        
     }
 
     // Update is called once per frame
