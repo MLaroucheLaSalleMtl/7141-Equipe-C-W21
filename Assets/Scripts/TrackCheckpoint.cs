@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TrackCheckpoint : MonoBehaviour
 {
+    CountdownTimer timer;
     LevelSystem levelSystem;
     GameManager manager;
     [SerializeField] public string nameTrack;
@@ -39,21 +40,24 @@ public class TrackCheckpoint : MonoBehaviour
     {
         Scene scene = SceneManager.GetActiveScene();
 
-
         if (checkpointList.IndexOf(checkpoint) == nextCheckpointIndex)
         {
             Debug.Log("Good");
             nextCheckpointIndex = (nextCheckpointIndex + 1) % checkpointList.Count;
-            Debug.Log("Count: " + checkpointCount);
+            //Debug.Log("Count: " + checkpointCount);
             if (lastCheckpoint == checkpointCount)
             {
                 isCompleted = true;
                 Debug.Log(isCompleted);
             };
+            //timer.totalTime += 10.0f;
+            
         }
         else
         {
             Debug.Log("Bad");
+            SceneManager.LoadScene(scene.name);
+           
         }
         
     }

@@ -1,52 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelSystem : MonoBehaviour
 {
     TrackCheckpoint track;
-    private static readonly int[] expPerLevel = new int[] { 0 ,115, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000 };
+    private static readonly int[] expPerLevel = new int[] { 250, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500 };
     public int level;
     public int experience;
 
-    public LevelSystem()
-    {
-        level = 0;
-        experience = 0;
-    }
+    //public LevelSystem()
+    //{
+      //  level = 0;
+        //experience = 0;
+    //}
 
     public void AddExperience(int amount)
     {
-        if(!IsMaxLevel()){ 
+
         experience += amount;
-        Debug.Log(experience);
-        while (!IsMaxLevel() && experience >= GetExpToNextLevel(level))
-        {
-            experience -= GetExpToNextLevel(level);
-            level++;
-            Debug.Log(level);
-        }
-        }
+        Debug.Log("Exp: " + experience);
+
+         if (experience >= GetExpToNextLevel(level))
+         {
+             experience -= GetExpToNextLevel(level);
+             level++;
+             Debug.Log("Level++: " + level);
+         }
+        Debug.Log("LevelUpdate: " + level);
+            PlayerPrefs.SetInt("level", level);
+            PlayerPrefs.SetInt("experience", experience);
+            PlayerPrefs.Save();
     }
+
     public int GetExpToNextLevel(int level)
     {
-        if(level < expPerLevel.Length)
+        if (level <= expPerLevel.Length)
         {
             return expPerLevel[level];
-        } else 
+        }
+        else
         {
             //Niveau invalide
             Debug.Log("Invalid Level: " + level);
-            return 100;
+            return 30;
         }
-        
+
     }
-    public bool IsMaxLevel()
+
+    private void Update()
     {
-        return IsMaxLevel(level);
+        //levelText.text = preLevelText + level.ToString();
+
+        //Debug.Log("LevelUpdate: " + level);
     }
-    public bool IsMaxLevel(int level)
-    {
-        return level == expPerLevel.Length - 1;
-    }
-}
+};

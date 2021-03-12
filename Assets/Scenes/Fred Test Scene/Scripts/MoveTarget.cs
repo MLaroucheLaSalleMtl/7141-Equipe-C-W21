@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+//Allo
 public class MoveTarget : MonoBehaviour
 {
     public GameObject board;

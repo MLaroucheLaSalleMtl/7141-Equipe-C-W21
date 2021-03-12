@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 57e329dd18a2f5b47b862f6656fe386b
+  - enabled: 0
+    path: Assets/Scenes/Fred scene anim.unity
+    guid: a3e3486d882d5c74caef54d7023c8240
+  - enabled: 0
     path: Assets/Scenes/Fred Test Scene/Fred Scene.unity
     guid: ec812d7c84f5f694f92cbdd133e339af
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: eeae530bb958d6545af61773ba7169ca
   m_configObjects: {}
