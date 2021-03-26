@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private CountdownTimer timer;
+    public CountdownTimer timer;
     private TrackCheckpoint trackCheckpoints;
     //private bool isColliding = false;
 
@@ -14,11 +14,12 @@ public class Checkpoint : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Snowboard"))
+        if (other.gameObject.CompareTag("Player"))
         {
             trackCheckpoints.PlayerThroughCheckpoint(this);
             gameObject.SetActive(false);
             trackCheckpoints.checkpointCount++;
+            timer.totalTime += 10f;
         }
     }
 

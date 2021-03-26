@@ -865,6 +865,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 710d82979cedfbe47af2f4aa9edd9936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &393070309
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393070300}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.34394857, y: 0.07872651, z: 1.7204795}
+  m_Center: {x: 0, y: 0, z: 0.000000029802322}
 --- !u!1 &446173887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,8 +1338,14 @@ MonoBehaviour:
   rightElbow: {fileID: 1558791355}
   mt2: {fileID: 204934037}
   hipOffset: {x: 0, y: 0, z: 0}
+  hipPos: 0
   lookAtTarget: {fileID: 204934040}
   whenFlipping: {fileID: 89821770}
+  rb: {fileID: 0}
+  currentVel: 0
+  target: {fileID: 0}
+  timer: 0
+  ball: {fileID: 0}
 --- !u!1 &816680211
 GameObject:
   m_ObjectHideFlags: 3
@@ -1693,6 +1712,7 @@ MonoBehaviour:
   isJumping: 0
   jmpForce: 2
   grounded: 0
+  railCollider: {fileID: 393070309}
 --- !u!114 &1100245820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2226,7 +2246,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697320625}
-  m_LocalRotation: {x: 0.22108926, y: -0.6600211, z: 0.21280485, w: 0.68571556}
+  m_LocalRotation: {x: 0.22093831, y: -0.66050714, z: 0.21296154, w: 0.68524736}
   m_LocalPosition: {x: -208.66606, y: 427.31165, z: 157.304}
   m_LocalScale: {x: 1.2674555, y: 0.3778151, z: 0.9872905}
   m_Children: []
@@ -2776,7 +2796,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842582391}
-  m_LocalRotation: {x: 0.22108927, y: -0.6600211, z: 0.21280485, w: 0.6857155}
+  m_LocalRotation: {x: 0.22093834, y: -0.66050714, z: 0.21296155, w: 0.68524736}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2957,6 +2977,10 @@ PrefabInstance:
     - target: {fileID: 7512293379234179919, guid: e21c9ffbaa6b8b1469e4bb98844c12b8, type: 3}
       propertyPath: m_Name
       value: Fred Test 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512293379234179919, guid: e21c9ffbaa6b8b1469e4bb98844c12b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7512293379249963220, guid: e21c9ffbaa6b8b1469e4bb98844c12b8, type: 3}
       propertyPath: m_CollisionDetection

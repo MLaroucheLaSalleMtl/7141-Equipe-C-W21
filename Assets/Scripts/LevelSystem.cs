@@ -6,53 +6,60 @@ using UnityEngine.UI;
 public class LevelSystem : MonoBehaviour
 {
     TrackCheckpoint track;
-    private static readonly int[] expPerLevel = new int[] { 250, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500 };
+    public Image experienceBar;
+    public Text levelText;
+    public Text experienceText;
+    public int expPerLevel;
+    public float expBar;
     public int level;
     public int experience;
+    //private int xpToNext;
 
     //public LevelSystem()
     //{
-      //  level = 0;
-        //experience = 0;
+    //  level = 0;
+    //experience = 0;
     //}
-
+    public void Awake()
+    {
+        //experience = PlayerPrefs.GetInt("experience", experience);
+        //level = PlayerPrefs.GetInt("level", level);
+        //PlayerPrefs.Save();
+        //PlayerPrefs.DeleteAll();
+        level = PlayerPrefs.GetInt("level");
+        experience = PlayerPrefs.GetInt("experience");
+        //PlayerPrefs.SetInt("expPerLevel", expPerLevel);
+        expPerLevel = PlayerPrefs.GetInt("expPerLevel");
+    }
     public void AddExperience(int amount)
     {
 
         experience += amount;
         Debug.Log("Exp: " + experience);
-
-         if (experience >= GetExpToNextLevel(level))
+        
+         if (experience >= expPerLevel)
          {
-             experience -= GetExpToNextLevel(level);
+             experience -= expPerLevel;
              level++;
+             expPerLevel += expPerLevel;
+            PlayerPrefs.SetInt("expPerLevel", expPerLevel);
              Debug.Log("Level++: " + level);
          }
-        Debug.Log("LevelUpdate: " + level);
+       // Debug.Log("LevelUpdate: " + level);
             PlayerPrefs.SetInt("level", level);
             PlayerPrefs.SetInt("experience", experience);
             PlayerPrefs.Save();
     }
 
-    public int GetExpToNextLevel(int level)
-    {
-        if (level <= expPerLevel.Length)
-        {
-            return expPerLevel[level];
-        }
-        else
-        {
-            //Niveau invalide
-            Debug.Log("Invalid Level: " + level);
-            return 30;
-        }
-
-    }
-
     private void Update()
     {
-        //levelText.text = preLevelText + level.ToString();
-
-        //Debug.Log("LevelUpdate: " + level);
+        Debug.Log("xpbar" + expBar); 
+        levelText.text = level.ToString();
+        experienceText.text = experience.ToString() + "/" + expPerLevel.ToString();
+        expBar = (float)experience / expPerLevel;
+        experienceBar.fillAmount = expBar;
+        Debug.Log("expPerLevel: " + expPerLevel);
+        Debug.Log("LevelUpdate: " + level);
+        Debug.Log("Exp" + experience);
     }
 };

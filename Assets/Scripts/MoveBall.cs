@@ -143,9 +143,9 @@ public void OnForward(InputAction.CallbackContext context)
         {
             rb.AddForce(direction * speed*2, ForceMode.Acceleration);
 
-        } if (isSlowingDown && rb.velocity.magnitude > 0)
+        } if (isSlowingDown && rb.velocity.magnitude > 0 && !mt.upSlope)
         {
-            rb.AddForce(direction * -speed*0.3f, ForceMode.Acceleration);
+            rb.AddForce(direction * -speed, ForceMode.Acceleration);
 
         } if (isTurningRight)
         {

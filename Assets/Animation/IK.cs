@@ -78,7 +78,7 @@ public class IK : MonoBehaviour
         {
             hip = 0f;
         }
-        Debug.Log(ball.currentSpeed);  
+       // Debug.Log(ball.currentSpeed);  
     }
 
     public void OnAnimatorIK()

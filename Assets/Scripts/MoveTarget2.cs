@@ -97,7 +97,7 @@ public class MoveTarget2 : MonoBehaviour
             transform.position += new Vector3(moveBall.direction.x, moveBall.direction.y, moveBall.direction.z) ;
         }
         
-        if (transform.position.y > board.transform.position.y + 1)
+        if (transform.position.y > board.transform.position.y + 1 || transform.position.y > board.transform.position.y)
         {
             upSlope = true;
         }

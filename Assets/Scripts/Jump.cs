@@ -12,11 +12,11 @@ public class Jump : MonoBehaviour
     [SerializeField] private float jmpForce;
     public bool grounded;
     private LayerMask ground;
-
-    public Collider railCollider;
+    public bool onRail;
+   
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (grounded)
+        if (grounded || onRail)
         {
             StartCoroutine(JumpSequence());
         }
@@ -34,12 +34,12 @@ public class Jump : MonoBehaviour
         if (Physics.Raycast(transform.position, -Vector3.up, out hitInfo, 1, ground))
         {
             grounded = true;
-            railCollider.enabled = false;
+           
         }
         else
         {
             grounded = false;
-            railCollider.enabled = true;
+           
         }
         Debug.DrawLine(transform.position, transform.position - Vector3.up * 3, Color.red, Mathf.Infinity);
     }
@@ -49,13 +49,19 @@ public class Jump : MonoBehaviour
         if (grounded && isJumping)
         {
             rb.AddForce(Vector3.up * jmpForce, ForceMode.Impulse);
+        }else if (onRail && isJumping)
+        {
+            rb.AddForce(Vector3.up * jmpForce * 2, ForceMode.Impulse);
         }
         CheckGround();
     }
+
+  
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         ground = LayerMask.GetMask("Ground");
+        
     }
 }
