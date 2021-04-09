@@ -4,6 +4,7 @@ using UnityEngine;
 //Allo
 public class JumpList : MonoBehaviour
 {
+    public Jump jmp;
     public List<GameObject> jmpList;
     private GameObject player;
     private GameObject incomingJump;
@@ -25,13 +26,14 @@ public class JumpList : MonoBehaviour
     {
         for (int i = 0; i < jmpList.Count; i++) {
             distance = Vector3.Distance(player.transform.position, jmpList[i].transform.position);
-            if (distance < 30)
+            if (distance < 10)
             {
                 incomingJump = jmpList[i];
                 approchingJump = true;
+                jmp.grounded = true;
             }
           }
-        if(Vector3.Distance(player.transform.position, incomingJump.transform.position) > 50)
+        if(Vector3.Distance(player.transform.position, incomingJump.transform.position) > 10)
         {
             approchingJump = false;
         }

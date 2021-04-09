@@ -10,6 +10,7 @@ public class MoveTarget2 : MonoBehaviour
     public MoveBall moveBall;
     public GameObject ball;
     private Jump jmp;
+    public JumpList jmpList;
 
     public float angle;
     public bool stopped = false;
@@ -97,7 +98,7 @@ public class MoveTarget2 : MonoBehaviour
             transform.position += new Vector3(moveBall.direction.x, moveBall.direction.y, moveBall.direction.z) ;
         }
         
-        if (transform.position.y > board.transform.position.y + 1 || transform.position.y > board.transform.position.y)
+        if ((transform.position.y > board.transform.position.y + 1 || transform.position.y > board.transform.position.y) && !jmpList.approchingJump)
         {
             upSlope = true;
         }

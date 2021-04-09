@@ -13,10 +13,11 @@ public class Jump : MonoBehaviour
     public bool grounded;
     private LayerMask ground;
     public bool onRail;
-   
+    public JumpList jmpList;
+    public Vector3 railDir = new Vector3();
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (grounded || onRail)
+        if (grounded || onRail || jmpList.approchingJump)
         {
             StartCoroutine(JumpSequence());
         }
@@ -34,7 +35,7 @@ public class Jump : MonoBehaviour
         if (Physics.Raycast(transform.position, -Vector3.up, out hitInfo, 1, ground))
         {
             grounded = true;
-           
+            onRail = false;
         }
         else
         {
@@ -51,7 +52,9 @@ public class Jump : MonoBehaviour
             rb.AddForce(Vector3.up * jmpForce, ForceMode.Impulse);
         }else if (onRail && isJumping)
         {
-            rb.AddForce(Vector3.up * jmpForce * 2, ForceMode.Impulse);
+            onRail = false;
+            rb.AddForce(railDir * jmpForce , ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jmpForce , ForceMode.Impulse);
         }
         CheckGround();
     }

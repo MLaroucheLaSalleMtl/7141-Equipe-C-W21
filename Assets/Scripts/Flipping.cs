@@ -19,7 +19,7 @@ public class Flipping : MonoBehaviour
     private BoardPosition bp;
     public void FlipRight(InputAction.CallbackContext context)
     {
-       if (context.performed && !jmp.grounded)
+       if (context.performed && !jmp.grounded && !jmp.onRail)
         {
             isFlipping = true;
             isFlippingRight = true;
@@ -34,7 +34,7 @@ public class Flipping : MonoBehaviour
 
     public void FlipLeft(InputAction.CallbackContext context)
     {
-        if (context.performed && !jmp.grounded)
+        if (context.performed && !jmp.grounded && !jmp.onRail)
         {
             isFlipping = true;
             isFlippingLeft = true;
@@ -49,7 +49,7 @@ public class Flipping : MonoBehaviour
     }
     public void FlipForward(InputAction.CallbackContext context)
     {
-        if (context.performed && !jmp.grounded)
+        if (context.performed && !jmp.grounded && !jmp.onRail)
         {
             isFlipping = true;
             isFlippingForward = true;
@@ -64,7 +64,7 @@ public class Flipping : MonoBehaviour
     }
     public void FlipBackwards(InputAction.CallbackContext context)
     {
-        if (context.performed && !jmp.grounded)
+        if (context.performed && !jmp.grounded && !jmp.onRail)
         {
             isFlipping = true;
             isFlippingBackwards = true;

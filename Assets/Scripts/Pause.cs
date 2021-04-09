@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 
 
@@ -20,6 +21,10 @@ public class Pause : MonoBehaviour
     public Renderer snowboard;
     public List<Material> skins;
 
+    public AudioSource audio;
+    public AudioMixer audioMixer;
+
+    int totalScore = 0;
     int currentScore;
     int highestScore = 0;
     // Update is called once per frame
@@ -30,8 +35,13 @@ public class Pause : MonoBehaviour
 
     void Update()
     {
+        if(currentScore != jumpingPoints.pointsToGiveInt)
+        {
+            totalScore += currentScore;
+        }
         currentScore = jumpingPoints.pointsToGiveInt;
-
+        
+        //Debug.Log("total score:"+totalScore);
         if(currentScore > highestScore)
         {
             highestScore = currentScore;
@@ -46,10 +56,7 @@ public class Pause : MonoBehaviour
 
         if (isPaused)
         {
-            Time.timeScale = 0;
-            pauseMenu.SetActive(true);
-            pointCounterUI.SetActive(false);
-            levelUI.SetActive(false);
+            PausePlay();
 
             //pauseMainUI.SetActive(true);
             //optionsUI.SetActive(false);
@@ -58,6 +65,15 @@ public class Pause : MonoBehaviour
         {
             ResumePlay();
         }
+    }
+
+    private void PausePlay()
+    {
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+        pointCounterUI.SetActive(false);
+        levelUI.SetActive(false);
+        audio.Pause();
     }
 
     public void BackToMainMenu()
@@ -71,6 +87,7 @@ public class Pause : MonoBehaviour
         pauseMenu.SetActive(false);
         pointCounterUI.SetActive(true);
         levelUI.SetActive(true);
+        audio.UnPause();
 
         //pauseMainUI.SetActive(true);
         //optionsUI.SetActive(false);
@@ -90,7 +107,10 @@ public class Pause : MonoBehaviour
 
     public void PickSkinOne()
     {
-        snowboard.material = skins[0];
+        if (totalScore >= 30) 
+        { 
+            snowboard.material = skins[0];
+        }
     }
 
     public void PickSkinTwo()

@@ -11,6 +11,7 @@ public class MoveBall : MonoBehaviour
     private MoveTarget2 mt;
     public Jump jmp;
     public JumpList jl;
+    public RagdollControll rag;
 
     public bool isSpeedingUp = false;
     private bool isSlowingDown = false;
@@ -20,6 +21,10 @@ public class MoveBall : MonoBehaviour
     public float speed;
     public float maxSpeed;
     public float currentSpeed;
+
+    private float speedVolume = 0;
+    public AudioSource snowSound;
+    public AudioSource railSound;
 
     public Vector3 direction = new Vector3();
 
@@ -137,7 +142,30 @@ public void OnForward(InputAction.CallbackContext context)
         direction = (targetSphere.transform.position - transform.position).normalized;
         Vector3 leftDir = Vector3.Cross(direction, Vector3.up).normalized;
         Vector3 rightDir = Vector3.Cross(direction, Vector3.down).normalized;
-
+        speedVolume = (currentSpeed / maxSpeed);
+        if(rag.isDead == true)
+        {
+            snowSound.volume = 0;
+        }
+        Debug.Log("RAGDOLL " + rag.isDead);
+        if (jmp.onRail == true)
+        {
+            railSound.volume = speedVolume;
+        }
+        else
+        {
+            railSound.volume = 0;
+        }
+        Debug.Log("RAIL " + jmp.onRail);
+        if (jmp.grounded == true)
+        {
+            snowSound.volume = speedVolume;
+        }
+        else
+        {
+            snowSound.volume = 0;
+        }
+        //Debug.Log("GROUND " + jmp.grounded);
         currentSpeed = rb.velocity.magnitude;
         if (isSpeedingUp && !mt.upSlope)
         {
@@ -145,7 +173,7 @@ public void OnForward(InputAction.CallbackContext context)
 
         } if (isSlowingDown && rb.velocity.magnitude > 0 && !mt.upSlope)
         {
-            rb.AddForce(direction * -speed, ForceMode.Acceleration);
+            rb.AddForce(direction * -speed*2, ForceMode.Acceleration);
 
         } if (isTurningRight)
         {

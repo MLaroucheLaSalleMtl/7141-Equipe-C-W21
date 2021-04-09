@@ -12,6 +12,8 @@ public class Trail : MonoBehaviour
 
     public TrailRenderer snowTrail;
 
+    public LayerMask groundLayer;
+
 
     public float trailWidth
     {
@@ -45,7 +47,9 @@ public class Trail : MonoBehaviour
         trailWidth = Mathf.Abs(mt2.angle) * .15f;
         //snowTrail.widthMultiplier = trailWidth;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit,0.25f))
+        //if (Physics.Raycast(transform.position, -Vector3.up, out hit,0.25f))
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 0.25f, groundLayer))
+
         {
             //snowTrail.enabled = true;
             //snowTrail.transform.parent = snowboard.transform;

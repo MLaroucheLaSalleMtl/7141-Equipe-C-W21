@@ -25,7 +25,7 @@ public class EnterRail : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         onRail = true;
-        
+        jmp.onRail = true;
         transform.position = player.transform.position;
         player.transform.position = transform.position;
     }
@@ -45,6 +45,7 @@ public class EnterRail : MonoBehaviour
                 transform.position = origPos;
                 onRail = false;
                 
+                
             }
             if (jmp.isJumping)
             {
@@ -53,8 +54,18 @@ public class EnterRail : MonoBehaviour
                 onRail = false;
                 
             }
+            if (player.transform.position != endRail.transform.position)
+            {
+                jmp.onRail = true;
+            }
+            else
+            {
+                jmp.onRail = false;
+            }
+            jmp.railDir = (endRail.transform.position - transform.position).normalized;
         }
-
+        
+      
         
 
         
