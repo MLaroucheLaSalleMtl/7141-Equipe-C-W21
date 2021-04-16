@@ -5,24 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    public void StartGame()
+    public void StartGame()//Load la scène principale
     {
-        SceneManager.LoadScene("Map");
+        SceneManager.LoadScene(1);
     }
 
-    public void Exit()
+    public void Exit()//Quitte le jeu
     {
         Application.Quit();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

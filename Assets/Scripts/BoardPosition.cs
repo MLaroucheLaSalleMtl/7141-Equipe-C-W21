@@ -4,21 +4,14 @@ using UnityEngine;
 //Allo
 public class BoardPosition : MonoBehaviour
 {
-    public GameObject rollB;
-    private Flipping flip;
-    public GameObject com;
-    private Vector3 boardPos = new Vector3();
-    private Vector3 topRollB = new Vector3();
-    // Start is called before the first frame update
-    void Start()
-    {
-        flip = GetComponent<Flipping>();
-    }
+    public GameObject rollB; //référence vers ball roller
+    
+    private Vector3 boardPos = new Vector3(); //Position du snowboard
 
     // Update is called once per frame
     void Update()
     {
-       
+            //Trouve la position voulue et ajuste la position du snowboard
             boardPos = new Vector3(rollB.transform.position.x, rollB.transform.position.y - 0.48f, rollB.transform.position.z);
             if (transform.position != boardPos)
             {

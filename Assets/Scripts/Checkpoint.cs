@@ -4,28 +4,23 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    public CountdownTimer timer;
-    private TrackCheckpoint trackCheckpoints;
-    //private bool isColliding = false;
+    public CountdownTimer timer; //Reference vers CountdownTimer
+    private TrackCheckpoint trackCheckpoints; //Reference vers TrackCheckpoint
 
-    private void Start()
+    private void OnTriggerEnter(Collider other)//TriggerEnter pour mes drapeaux
     {
-        
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))//Si lobject a le tag Player
         {
-            trackCheckpoints.PlayerThroughCheckpoint(this);
-            gameObject.SetActive(false);
-            trackCheckpoints.checkpointCount++;
-            timer.totalTime += 10f;
+            trackCheckpoints.PlayerThroughCheckpoint(this); //Passe dans le checkpoint prend le gameObject
+            gameObject.SetActive(false); //Desactive le gameobject
+            trackCheckpoints.checkpointCount++; //Incremente mon compteur
+            timer.totalTime += 3f; //Ajoute du temps au timer
         }
     }
 
     public void SetTrackCheckpoints(TrackCheckpoint trackCheckpoints)
     {
-        this.trackCheckpoints = trackCheckpoints;
+        this.trackCheckpoints = trackCheckpoints; //Pour faire reference a lobject quon va ajouter a la liste de checkpoint
     }
 
     //IEnumerator Reset()

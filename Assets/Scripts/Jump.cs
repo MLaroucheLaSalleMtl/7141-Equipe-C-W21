@@ -6,15 +6,17 @@ using UnityEngine.InputSystem;
 
 public class Jump : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody rb; //Rigidbody de la balle
 
-    public bool isJumping = false;
-    [SerializeField] private float jmpForce;
-    public bool grounded;
-    private LayerMask ground;
-    public bool onRail;
-    public JumpList jmpList;
-    public Vector3 railDir = new Vector3();
+    public bool isJumping = false; //Bool pour activer le saut
+    [SerializeField] private float jmpForce; //Force de saut
+    public bool grounded; //Bool pour savoir si le personnage est au sol 
+    private LayerMask ground; //Layers du terrain
+    public bool onRail;//Bool pour savoir si le personnag est sur une ¨Rail¨
+    public JumpList jmpList; //Script JumpList
+    public Vector3 railDir = new Vector3(); //Direction de la rail
+
+    //Input system
     public void OnJump(InputAction.CallbackContext context)
     {
         if (grounded || onRail || jmpList.approchingJump)
@@ -23,40 +25,43 @@ public class Jump : MonoBehaviour
         }
     }
 
+    //Coroutine pour activer isJumping
     IEnumerator JumpSequence()
     {
         isJumping = true;
         yield return new WaitForSeconds(0.1f);
         isJumping = false;
     }
+
+    //Raycast pour savoir si le personnage est au sol
     private void CheckGround()
     {
         RaycastHit hitInfo;
         if (Physics.Raycast(transform.position, -Vector3.up, out hitInfo, 1, ground))
         {
             grounded = true;
-            onRail = false;
+            onRail = false; //Enleve le onRail, car personnage au sol
         }
         else
         {
             grounded = false;
            
         }
-        Debug.DrawLine(transform.position, transform.position - Vector3.up * 3, Color.red, Mathf.Infinity);
     }
 
     private void Update()
     {
         if (grounded && isJumping)
         {
-            rb.AddForce(Vector3.up * jmpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jmpForce, ForceMode.Impulse); //Force pour sauter
         }else if (onRail && isJumping)
         {
+            //Sauter quand il est sur une rail
             onRail = false;
             rb.AddForce(railDir * jmpForce , ForceMode.Impulse);
             rb.AddForce(Vector3.up * jmpForce , ForceMode.Impulse);
         }
-        CheckGround();
+        CheckGround(); //Check ground à chaque update
     }
 
   

@@ -1,26 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//Allo
 public class Teleport : MonoBehaviour
 {
-    public Transform destination;
-    public Transform player;
+    public Transform destination;//Référence à l'objet vers lequel va se déplacer le joueur
+    public Transform player;//Référence à la position du joueur
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        player.position = destination.transform.position;
+        player.position = destination.transform.position;//Déplace le joueur vers l'objet indiqué
     }
 }

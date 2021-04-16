@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+                                                //Script non utilisé, remplacé par un script de IK.
 public class Animation : MonoBehaviour
 {
     public Animator anim;

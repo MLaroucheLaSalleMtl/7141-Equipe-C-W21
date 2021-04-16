@@ -2,59 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-//Allo
+
 public class MoveBall : MonoBehaviour
 {
-    private Rigidbody rb;
-    public GameObject targetSphere;
-    public GameObject motherSphere;
-    private MoveTarget2 mt;
-    public Jump jmp;
-    public JumpList jl;
-    public RagdollControll rag;
+    //Script par Frédéric Lessard sauf parties marqués autrement 
+    private Rigidbody rb; //Rigidbody de la balle
+    public GameObject targetSphere; //Sphere target
+    public GameObject motherSphere; // Sphere mère de target
+    private MoveTarget2 mt; //Script Move target sur targetsphere
+    public Jump jmp; //Script jump
+    public JumpList jl; // script jump list
+    public RagdollControll rag; //Scriopt ragdollcontroll
 
-    public bool isSpeedingUp = false;
-    private bool isSlowingDown = false;
-    private bool isTurningRight = false;
-    private bool isTurningLeft = false;
+    public bool isSpeedingUp = false; //Bool pour le input system
+    private bool isSlowingDown = false;//Bool pour le input system
+    private bool isTurningRight = false;//Bool pour le input system
+    private bool isTurningLeft = false;//Bool pour le input system
 
-    public float speed;
-    public float maxSpeed;
-    public float currentSpeed;
+    public float speed; //vitesse visée du joueur
+    public float maxSpeed;//vitesse maximale du joueur
+    public float currentSpeed; //Vitesse actuelle du joeur
 
-    private float speedVolume = 0;
+    //Guillaume Desgagné
+    private float speedVolume = 0; 
     public AudioSource snowSound;
     public AudioSource railSound;
 
-    public Vector3 direction = new Vector3();
+    //Frederic vv
+    public Vector3 direction = new Vector3();//Direction du joueur pour la vitesse
+    private Vector3 dir = new Vector3(); //Direction du joueur pour le controle perpendiculaire
+    private Vector3 dirLeft = new Vector3(); //Direction perpendiculaire vers la gauche
+    private Vector3 dirRight = new Vector3(); //Direction perpendiculaire ver la droite
 
-    private Vector3 dir = new Vector3();
-    private Vector3 dirLeft = new Vector3();
-    private Vector3 dirRight = new Vector3();
+    //Ajoute de la force inverse quand le snowboard est perpendiculaire à la direction dont il glisse
     private void PerpendStopping() {
-        float perpSpeed = speed / 3;
-        dir = (transform.position - targetSphere.transform.position).normalized;
-        dirRight = Vector3.Cross(dir, Vector3.up).normalized;
-        dirLeft = -dirRight;
+        float perpSpeed = speed / 3; //vitesse perpendiculaire
+
+        //Trouvé ce calcul sur internet
+        //https://answers.unity.com/questions/697830/how-to-calculate-direction-between-2-objects.html
+        dir = (transform.position - targetSphere.transform.position).normalized; 
+
+        
+        dirRight = Vector3.Cross(dir, Vector3.up).normalized;//Perpendiculaire à la direction
+        dirLeft = -dirRight; //Perpendiculaire gauche
         if (isTurningLeft)
         {
-            rb.AddForce(dirLeft * perpSpeed, ForceMode.Force);
+            rb.AddForce(dirLeft * perpSpeed, ForceMode.Force); //ajoute de la force
         }
         else if (isTurningRight)
         {
-            rb.AddForce(dirRight * perpSpeed, ForceMode.Force);
+            rb.AddForce(dirRight * perpSpeed, ForceMode.Force); //ajoute de la force
         }
         SlippageCorrection();
     }   
 
+    //Rectifie le glissage non-désiré
     private void SlippageCorrection()
     {
-        int frame = 1;
-        Vector3 firstPos = new Vector3();
-        Vector3 secPos = new Vector3();
-        Vector3 slipDir = new Vector3();
-        Vector3 invSlipDir = new Vector3();
-
+        int frame = 1; //Calcul le nombre de frames
+        Vector3 firstPos = new Vector3(); //Premiere position pour le calcul de la direction du glissage
+        Vector3 secPos = new Vector3();   //Deuxieme ¨¨
+        Vector3 slipDir = new Vector3(); //Direction du glissage
+        
+        //Prends les positions
         if (frame == 1)
         {
             firstPos = transform.position;
@@ -65,8 +75,9 @@ public class MoveBall : MonoBehaviour
             frame--;
         }
 
-        slipDir = (firstPos - secPos).normalized;
-        invSlipDir = Vector3.Cross(slipDir, Vector3.up).normalized;
+        slipDir = (firstPos - secPos).normalized;//Meme calcul que plus haut ^^
+       
+        //Ajoute de la force pour rectifier le glissage
         if (jmp.grounded)
         {
             rb.AddForce(-slipDir * currentSpeed/2, ForceMode.Force);
@@ -74,13 +85,10 @@ public class MoveBall : MonoBehaviour
         {
             rb.AddForce(-slipDir * currentSpeed/5, ForceMode.Force);
         }
-        Debug.DrawLine(transform.position, transform.position + invSlipDir * 3, Color.green, Mathf.Infinity);
-        Debug.DrawLine(transform.position, transform.position + slipDir * 3, Color.red, Mathf.Infinity);
-        Debug.DrawLine(transform.position, transform.position + -slipDir * 3, Color.yellow, Mathf.Infinity);
-
 
     }
-    
+  
+    // Input system pour avancer
 public void OnForward(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -92,6 +100,7 @@ public void OnForward(InputAction.CallbackContext context)
             isSpeedingUp = false;
         }
     }
+    //Ralentir
     public void OnSlowDown(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -103,6 +112,7 @@ public void OnForward(InputAction.CallbackContext context)
         }
     }
 
+    //pencher à droite
     public void OnTurnRight(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -114,6 +124,7 @@ public void OnForward(InputAction.CallbackContext context)
             isTurningRight = false;
         }
     }
+    //pencher à gauche
     public void OnTurnLeft(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -136,37 +147,40 @@ public void OnForward(InputAction.CallbackContext context)
     // Update is called once per frame
     void Update()
     {
-        Vector3 mSDir = new Vector3();
-        mSDir = (motherSphere.transform.position - transform.position).normalized;
+        
         PerpendStopping();
-        direction = (targetSphere.transform.position - transform.position).normalized;
-        Vector3 leftDir = Vector3.Cross(direction, Vector3.up).normalized;
-        Vector3 rightDir = Vector3.Cross(direction, Vector3.down).normalized;
-        speedVolume = (currentSpeed / maxSpeed);
-        if(rag.isDead == true)
+
+        direction = (targetSphere.transform.position - transform.position).normalized;//Trouve la direction
+        Vector3 leftDir = Vector3.Cross(direction, Vector3.up).normalized; //Direction droite
+        Vector3 rightDir = Vector3.Cross(direction, Vector3.down).normalized; //Direction gauche
+        
+        //Guillaume vv
+        speedVolume = (currentSpeed / maxSpeed); //Pour calculer le volume des AudioSource
+        if(rag.isDead == true)//Si le player se retrouve en Ragdoll
         {
-            snowSound.volume = 0;
+            snowSound.Stop(); //Arrete le son du snowboard
         }
-        Debug.Log("RAGDOLL " + rag.isDead);
-        if (jmp.onRail == true)
+        if (jmp.onRail == true)//Si le player fait une rail
         {
-            railSound.volume = speedVolume;
+            railSound.volume = speedVolume; //Augmente le son selon la vitesse
         }
-        else
+        else //Si le player ne fait pas de rail
         {
-            railSound.volume = 0;
+            railSound.volume = 0; //volume = 0
         }
-        Debug.Log("RAIL " + jmp.onRail);
-        if (jmp.grounded == true)
+        if (jmp.grounded == true) //Si le payer touche le sol
         {
-            snowSound.volume = speedVolume;
+            snowSound.volume = speedVolume; //Augmente le son selon la vitesse
         }
-        else
+        else //Si le player n'est pas grounded
         {
-            snowSound.volume = 0;
+            snowSound.volume = 0; //volume = 0;
         }
-        //Debug.Log("GROUND " + jmp.grounded);
-        currentSpeed = rb.velocity.magnitude;
+        
+
+        //Frederic vv
+        currentSpeed = rb.velocity.magnitude; //Vitesse actuelle
+        //Input system pour controller le personnage
         if (isSpeedingUp && !mt.upSlope)
         {
             rb.AddForce(direction * speed*2, ForceMode.Acceleration);
@@ -178,17 +192,16 @@ public void OnForward(InputAction.CallbackContext context)
         } if (isTurningRight)
         {
             rb.AddForce(rightDir * speed, ForceMode.Acceleration); 
-           // rb.AddForce(mSDir * speed/2, ForceMode.Acceleration);
-            //direction = Vector3.left;
+          
         } if (isTurningLeft)
         {
             rb.AddForce(leftDir * speed, ForceMode.Acceleration);
-           // rb.AddForce(mSDir * speed / 2, ForceMode.Acceleration);
-            //direction = Vector3.right;
+         
         } 
     }
     private void FixedUpdate()
     {
+        //Controle la vistesse maximale
         if (rb.velocity.magnitude > maxSpeed)
         {
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);

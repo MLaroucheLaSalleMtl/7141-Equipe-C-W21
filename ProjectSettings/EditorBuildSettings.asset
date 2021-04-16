@@ -8,13 +8,31 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 57e329dd18a2f5b47b862f6656fe386b
-  - enabled: 0
-    path: Assets/Scenes/Fred scene anim.unity
-    guid: a3e3486d882d5c74caef54d7023c8240
-  - enabled: 0
-    path: Assets/Scenes/Fred Test Scene/Fred Scene.unity
-    guid: ec812d7c84f5f694f92cbdd133e339af
   - enabled: 1
-    path: Assets/Scenes/Map.unity
+    path: Assets/Scenes/Map (001).unity
     guid: eeae530bb958d6545af61773ba7169ca
+  - enabled: 1
+    path: Assets/Scenes/Map (002).unity
+    guid: 268c6933bbb47c04fae093b4246795c1
+  - enabled: 1
+    path: Assets/Scenes/Map (003).unity
+    guid: 4a8eadd3de954a3468bb0f7c8119f0c5
+  - enabled: 1
+    path: Assets/Scenes/Map (004).unity
+    guid: b7d8e9ea4e0e5db46bc9af965e96dc8d
+  - enabled: 1
+    path: Assets/Scenes/Map (005).unity
+    guid: 1a692423c77db4c4d904c4db30daddf2
+  - enabled: 1
+    path: Assets/Scenes/Map (006).unity
+    guid: 01297d22203e7c0438981bcf3ca3c11c
+  - enabled: 1
+    path: Assets/Scenes/FreeMode (001).unity
+    guid: 33666eb244be4b440bb52166317545fd
+  - enabled: 1
+    path: Assets/Scenes/FreeMode (002).unity
+    guid: aec10477047c75b4d9f46bb7eab23925
+  - enabled: 1
+    path: Assets/Scenes/FreeMode (003).unity
+    guid: 38c8578e190dd7a459ffb5507738e166
   m_configObjects: {}

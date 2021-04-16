@@ -5,85 +5,74 @@ using UnityEngine.UI;
 
 public class JumpingPoints : MonoBehaviour
 {
-    public Jump jmp;
-    public LevelSystem level;
+    public Jump jmp; //Référence vers script jump
+    public LevelSystem level; //référence vers le level system
 
-    public float maxHeight = 0;
-    private float distance;
-    public Text pointsTxt;
-    public Text multiplierTxt;
-    public bool started;
-    private Vector3 origPos = new Vector3();
-    private Vector3 endPos = new Vector3();
+    public float maxHeight = 0; //point le plus haut d'un jump
+    private float distance; //distance du jump
+    public Text pointsTxt; //texte pour les points
+    public Text multiplierTxt; //texte pour le multiplier
+    public bool started; //bool jump à commencer
+    private Vector3 origPos = new Vector3(); //position au début du jump
    
-    float multiplier;
-    float pointsToGive;
-    public int pointsToGiveInt;
-    public Animator anim;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    float multiplier; //multiplier points
+    float pointsToGive; //points total 
+    public int pointsToGiveInt; //total points en int
+    public Animator anim; //animator
 
+    //Séquence pour sauter
     IEnumerator JumpSequence()
     {
+        yield return new WaitUntil(() => jmp.grounded); //attends que le joueur attérisse
+        started = false; //jump fini
         
+        distance = Vector3.Distance(origPos, transform.position); //calcul la distance parcourue
         
-       
-        yield return new WaitUntil(() => jmp.grounded);
-        started = false;
-        endPos = transform.position;
-        distance = Vector3.Distance(origPos, transform.position);
-        
-        GivePoints();
-        anim.SetTrigger("Landed");
-        pointsTxt.text =  pointsToGive.ToString();
-        multiplierTxt.text =  multiplier.ToString() + "X";
+        GivePoints(); //Donne les points
+        anim.SetTrigger("Landed"); //Animation des points à l'atterissage
+        pointsTxt.text =  pointsToGive.ToString(); //Ajuste le texte de points
+        multiplierTxt.text =  multiplier.ToString() + "X"; //Ajuste le texte de multiplier
         
     }
     // Update is called once per frame
     void Update()
     {
-       if (!jmp.grounded && !started)
+       
+       if (!jmp.grounded && !started) //Quand le joueur saute
         {
-            maxHeight = 0f;
+            maxHeight = 0f; //Hauteur remise à 0
             
             started = true;
             
-            origPos = transform.position;
-            StartCoroutine(JumpSequence());
-            
-            
-                
-            
-                
+            origPos = transform.position; //Enregistre la position de départ
+            StartCoroutine(JumpSequence()); //Commence la coroutine
             
         }
-       if (started)
+       if (started) //Durant le saut
         {
            
-
+            //Trouve la distance entre le joueur et le sol, pour le multiplier
             RaycastHit hit;
             if (Physics.Raycast(transform.position, -Vector3.up, out hit))
             {
-               if (hit.distance > maxHeight)
+               if (hit.distance > maxHeight) //Prends la hauteur la plus grande
                 {
                     maxHeight = hit.distance;
-                    if (maxHeight < 1) { maxHeight = 1; }
-                    multiplier = maxHeight / 2;
+                    if (maxHeight < 1) { maxHeight = 1; } //Multiplier ne peux pas etre 0
+                    multiplier = maxHeight / 2; 
                 }
                 
             }
-            pointsTxt.text = Vector3.Distance(origPos, transform.position).ToString("F0");
+            pointsTxt.text = Vector3.Distance(origPos, transform.position).ToString("F0"); //Affiche les points
 
         }
 
-        if (multiplier < 1) { multiplier = 1; }
-        multiplierTxt.text =  multiplier.ToString("F0") + "X";
-        // pointsTxt.text = Vector3.Distance(origPos, transform.position).ToString("F0");
+        if (multiplier < 1) { multiplier = 1; } 
+        multiplierTxt.text =  multiplier.ToString("F0") + "X"; //Affichge les points durant le saut
+        
     }
 
+    //Donne les points total au joueur
     public void GivePoints()
     {
         multiplier =(int) maxHeight / 2;
@@ -91,10 +80,12 @@ public class JumpingPoints : MonoBehaviour
         {
             multiplier = 1;
         }
-        pointsToGive = (int)distance * multiplier;
-        pointsToGiveInt = (int)Mathf.Round(pointsToGive);
-        level.AddExperience(pointsToGiveInt);
-        Debug.Log("Point" + pointsToGiveInt);
+        if (multiplier <= 15)//Sauter de la montagne la plus haute(Freemode 3) donnait multipler de x50 et un total de 20000 scores donc 20000 exp
+        {
+            pointsToGive = (int)distance * multiplier; //Calcul avec le multiplier
+            pointsToGiveInt = (int)Mathf.Round(pointsToGive); //Transferer le float en int pour le LevelSystem
+            level.AddExperience(pointsToGiveInt); //Appel AddExperience pour les player prefs
+        }
     }
     
 }
